@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        .desc{
+            display: flex;
+        }
+
+        #desc{
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+  
+  
+    <h2>Weather App</h2>
+        <input type="text" id="in" placeholder="Enter A City">
+
+
+
+    <h2 id="city"></h2>
+    <h2 id="temp"></h2>
+    <div class="desc">
+        <img src="" alt="" id="icon">
+        <h3 id="desc"></h3>
+    </div>
+
+
+    <script>
+
+ 
+       
+        let weather = {
+            apiKey: "d6925ee74b601472743f37810b77b229",
+            // d6925ee74b601472743f37810b77b229
+            getWeather: function(city){
+                
+                // console.log(cityName.value);
+                fetch("https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+ this.apiKey)
+                .then((response) => response.json())
+                .then((data) => this.displayResult(data));
+            },
+            displayResult: function(data){
+                const {name} = data;
+                const {temp, humidity} = data.main;
+                const {icon, description} = data.weather[0];
+                const {speed} = data.wind;
+                // console.log(data.name);
+
+                document.getElementById('city').innerHTML = "Weather in "+name;
+                document.getElementById('temp').innerHTML = "Temperature: "+(temp-273).toFixed(2)+"<sup>0</sup>C";
+                document.getElementById('icon').src = "https://openweathermap.org/img/wn/"+icon+"@2x.png";
+                document.getElementById("desc").innerHTML = description;
+
+                // var cityName = ;
+            }
+        }
+       
+       
+        document.getElementById('in').addEventListener("keyup", function(e){
+            if(e.key == "Enter"){
+                var x = document.getElementById('in').value;
+                weather.getWeather(x)
+            }
+           
+        });
+        
+        document.getElementById('in').addEventListener("change", function(){
+            var x = document.getElementById('in').value;
+            weather.getWeather(x)
+        });
+
+
+      
+
+    </script>
+</body>
+</html>
